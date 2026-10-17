@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AD_CONFIG, BannerAd } from "./ads";
 import {
   Archive,
   ArchiveRestore,

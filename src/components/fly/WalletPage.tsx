@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RewardedAdCard } from "./ads";
 import { ArrowLeft, Loader2, Star, Wallet, CheckCircle2, Clock } from "lucide-react";
 import {
   collection,

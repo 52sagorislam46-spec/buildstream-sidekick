@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
+import { AD_CONFIG, BannerAd, InterstitialHost } from "./ads";
 import { Bell, Bird, Loader2, Pause, Search } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
