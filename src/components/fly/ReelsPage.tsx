@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent } from "react";
+import { onReelSeen } from "./ads";
 import { Check, Copy, Download, Eye, Heart, Loader2, MessageCircle, MoreHorizontal, Music2, Pause, Play, RotateCcw, RotateCw, Search, Send, Trash2, Volume2, VolumeX } from "lucide-react";
 import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, increment, onSnapshot, updateDoc } from "firebase/firestore";
 import { db, secureUrl } from "../../lib/firebase";
@@ -171,6 +172,7 @@ function Reel({
         if (entry && entry.isIntersecting && entry.intersectionRatio > 0.6) {
           el.play().catch(() => {});
           registerView(post.id);
+          onReelSeen();
         } else {
           el.pause();
         }

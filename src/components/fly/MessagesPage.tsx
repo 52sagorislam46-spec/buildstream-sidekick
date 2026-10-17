@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AD_CONFIG, BannerAd } from "./ads";
 import {
   Archive,
   ArchiveRestore,
@@ -352,7 +353,7 @@ export function MessagesPage({
 
       ) : (
         <ul>
-          {filtered.map((c) => {
+          {filtered.map((c, ci) => {
             const p = presence[c.otherId] ?? undefined;
             const online = isOnline(p);
             const label = presenceLabel(p);
@@ -370,7 +371,7 @@ export function MessagesPage({
             });
             const isUnread = pref.unread || autoUnread;
             return (
-              <li key={c.otherId}>
+              <Fragment key={c.otherId}><li>
                 <button
                   onClick={() => {
                     if (pref.unread) setPrefs(c.otherId, { unread: false });
@@ -473,6 +474,7 @@ export function MessagesPage({
                   </div>
                 </button>
               </li>
+              {(ci + 1) % AD_CONFIG.chatAdEvery === 0 && <li><BannerAd /></li>}</Fragment>
             );
           })}
         </ul>

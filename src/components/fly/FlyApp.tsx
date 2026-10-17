@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
+import { AD_CONFIG, BannerAd, InterstitialHost } from "./ads";
 import { Bell, Bird, Loader2, Pause, Search } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
@@ -112,6 +113,7 @@ function Feed({
                 onOpenReels={onOpenReels}
               />
               {i === 1 && <SuggestedUsers onOpenProfile={onOpenProfile} />}
+              {(i + 1) % AD_CONFIG.feedAdEvery === 0 && <BannerAd />}
             </div>
           ))}
           {hasMore && (
@@ -409,6 +411,7 @@ export function FlyApp() {
       <CallProvider>
         <GroupCallProvider>
           <Shell />
+          <InterstitialHost />
         </GroupCallProvider>
       </CallProvider>
     </AuthProvider>
