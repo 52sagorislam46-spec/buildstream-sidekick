@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { doc, increment, setDoc } from "firebase/firestore";
 import { Gift, Loader2, Megaphone, X } from "lucide-react";
 import { db } from "../../lib/firebase";
+import adVideo from "../../assets/fly-ad.mp4.asset.json";
 
 /**
  * Ad configuration. Fill in real IDs from Google AdMob/AdSense and
@@ -80,6 +81,19 @@ export function onReelSeen() {
   }
 }
 
+/** Full-screen video ad creative (your uploaded ad video). */
+function AdVideo() {
+  return (
+    <video
+      src={adVideo.url}
+      autoPlay
+      playsInline
+      loop
+      className="max-h-full max-w-full object-contain"
+    />
+  );
+}
+
 function AdCreative({ compact }: { compact?: boolean }) {
   return (
     <div className={`flex items-center gap-3 ${compact ? "" : "flex-col text-center"}`}>
@@ -123,7 +137,7 @@ export function InterstitialHost() {
       >
         {left > 0 ? `${left}s` : <X size={16} />}
       </button>
-      <AdCreative />
+      <AdVideo />
     </div>
   );
 }
@@ -194,7 +208,7 @@ export function RewardedAdCard({ uid }: { uid: string }) {
           <span className="absolute top-4 right-4 flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs">
             <Loader2 size={12} className="animate-spin" /> {left}s
           </span>
-          <AdCreative />
+          <AdVideo />
         </div>
       )}
     </div>
