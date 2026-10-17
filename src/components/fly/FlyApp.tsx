@@ -112,6 +112,7 @@ function Feed({
                 onOpenReels={onOpenReels}
               />
               {i === 1 && <SuggestedUsers onOpenProfile={onOpenProfile} />}
+              {(i + 1) % AD_CONFIG.feedAdEvery === 0 && <BannerAd />}
             </div>
           ))}
           {hasMore && (

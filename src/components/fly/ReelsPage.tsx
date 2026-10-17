@@ -171,6 +171,7 @@ function Reel({
         if (entry && entry.isIntersecting && entry.intersectionRatio > 0.6) {
           el.play().catch(() => {});
           registerView(post.id);
+          onReelSeen();
         } else {
           el.pause();
         }

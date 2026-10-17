@@ -145,6 +145,8 @@ export function WalletPage({ onBack }: { onBack: () => void }) {
 
         <AddMoneyCard />
 
+        {user && <RewardedAdCard uid={user.uid} />}
+
         <div className="rounded-2xl bg-white border border-gray-100 p-4 space-y-3">
           <h2 className="font-semibold text-gray-900">Cash Out</h2>
           {!canCashOut ? (
