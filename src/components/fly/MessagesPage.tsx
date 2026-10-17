@@ -353,7 +353,7 @@ export function MessagesPage({
 
       ) : (
         <ul>
-          {filtered.map((c) => {
+          {filtered.map((c, ci) => {
             const p = presence[c.otherId] ?? undefined;
             const online = isOnline(p);
             const label = presenceLabel(p);
@@ -474,6 +474,7 @@ export function MessagesPage({
                   </div>
                 </button>
               </li>
+              {(ci + 1) % AD_CONFIG.chatAdEvery === 0 && <BannerAd />}
             );
           })}
         </ul>
