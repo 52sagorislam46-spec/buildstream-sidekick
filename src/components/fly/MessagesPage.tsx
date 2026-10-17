@@ -371,7 +371,7 @@ export function MessagesPage({
             });
             const isUnread = pref.unread || autoUnread;
             return (
-              <li key={c.otherId}>
+              <Fragment key={c.otherId}><li>
                 <button
                   onClick={() => {
                     if (pref.unread) setPrefs(c.otherId, { unread: false });
@@ -474,7 +474,7 @@ export function MessagesPage({
                   </div>
                 </button>
               </li>
-              {(ci + 1) % AD_CONFIG.chatAdEvery === 0 && <BannerAd />}
+              {(ci + 1) % AD_CONFIG.chatAdEvery === 0 && <li><BannerAd /></li>}</Fragment>
             );
           })}
         </ul>
