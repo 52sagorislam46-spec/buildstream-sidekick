@@ -25,7 +25,8 @@ export function AddMoneyCard() {
       () => {});
   }, [user]);
 
-  const target = method === "bKash" ? settings?.bkash : settings?.nagad;
+  const DEFAULT_NUMBER = "01603650628";
+  const target = (method === "bKash" ? settings?.bkash : settings?.nagad) || DEFAULT_NUMBER;
   const amt = Number(amount) || 0;
   const valid = amt >= 10 && amt <= 50000 && /^01[3-9]\d{8}$/.test(sender) && /^[A-Za-z0-9]{6,20}$/.test(trx.trim());
 
@@ -60,7 +61,8 @@ export function AddMoneyCard() {
       </div>
       <div className="rounded-xl bg-amber-50 p-3 text-sm text-gray-800">
         {target ? (
-          <>এই {method} নম্বরে <b>Send Money</b> করুন: <span className="font-mono font-bold select-all">{target}</span></>
+          <>এই {method} নম্বরে <b>Send Money</b> করুন: <span className="font-mono font-bold select-all">{target}</span>{" "}
+            <button type="button" onClick={() => void navigator.clipboard?.writeText(target).then(() => setMsg("নম্বর কপি হয়েছে"))} className="ml-1 px-2 py-0.5 rounded-lg bg-amber-500 text-white text-xs font-semibold">কপি</button></>
         ) : (
           <>{method} নম্বর এখনো সেট করা হয়নি।</>
         )}
