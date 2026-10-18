@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { BadgeCheck, Crown } from "lucide-react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../lib/firebase";
+import { PremiumBadge } from "./premium";
 
 /** Public status flags set by admins on a user's profile document. */
 export interface UserStatus {
   vipApproved: boolean;
   monetized: boolean;
+  premium: boolean;
 }
 
-const EMPTY: UserStatus = { vipApproved: false, monetized: false };
+const EMPTY: UserStatus = { vipApproved: false, monetized: false, premium: false };
 const cache = new Map<string, UserStatus>();
 const listeners = new Map<string, Set<(s: UserStatus) => void>>();
 const unsubs = new Map<string, () => void>();
@@ -36,6 +38,7 @@ export function useUserStatus(uid: string | undefined): UserStatus {
           const next = {
             vipApproved: d["vipApproved"] === true,
             monetized: d["monetizationStatus"] === "approved",
+            premium: Number(d["premiumUntil"] ?? 0) > Date.now(),
           };
           cache.set(uid, next);
           listeners.get(uid)?.forEach((fn) => fn(next));
@@ -86,9 +89,10 @@ export function MonetizedBadge({ label = false }: { label?: boolean }) {
 /** Renders every public badge a user has earned, next to their name. */
 export function UserBadges({ uid, label = false }: { uid: string | undefined; label?: boolean }) {
   const s = useUserStatus(uid);
-  if (!s.vipApproved && !s.monetized) return null;
+  if (!s.vipApproved && !s.monetized && !s.premium) return null;
   return (
     <>
+      {s.premium && <PremiumBadge />}
       {s.monetized && <MonetizedBadge label={label} />}
       {s.vipApproved && <AdminVipBadge />}
     </>

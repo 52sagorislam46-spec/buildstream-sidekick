@@ -12,6 +12,7 @@ import {
 import { db } from "../../lib/firebase";
 import { useAuth } from "./AuthContext";
 import { AddMoneyCard } from "./AddMoneyCard";
+import { PremiumCard } from "./premium";
 
 /** How many taka one received star is worth. */
 export const TAKA_PER_STAR = 0.5;
@@ -144,6 +145,7 @@ export function WalletPage({ onBack }: { onBack: () => void }) {
           </div>
         </div>
 
+        <PremiumCard />
         <AddMoneyCard />
 
         {user && <RewardedAdCard uid={user.uid} />}
