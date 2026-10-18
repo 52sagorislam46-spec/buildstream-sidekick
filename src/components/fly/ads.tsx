@@ -3,6 +3,14 @@ import { doc, increment, setDoc } from "firebase/firestore";
 import { Gift, Loader2, Megaphone, X } from "lucide-react";
 import { db } from "../../lib/firebase";
 import adVideo from "../../assets/fly-ad.mp4.asset.json";
+import { useAuth } from "./AuthContext";
+import { isPremium } from "./premium";
+
+/** Premium members browse ad-free. Set from the signed-in profile. */
+let adFree = false;
+export function setAdFree(v: boolean) {
+  adFree = v;
+}
 
 /**
  * Ad configuration. Fill in real IDs from Google AdMob/AdSense and
@@ -74,6 +82,7 @@ let reelCount = 0;
 const listeners = new Set<() => void>();
 /** Call whenever a new reel comes into view. */
 export function onReelSeen() {
+  if (adFree) return;
   reelCount += 1;
   if (reelCount % AD_CONFIG.reelsInterstitialEvery === 0 && canShow("interstitial")) {
     recordShown("interstitial");
@@ -110,6 +119,9 @@ function AdCreative({ compact }: { compact?: boolean }) {
 
 /** Full-screen ad shown after every few reels. Mount once in the app. */
 export function InterstitialHost() {
+  const { profile } = useAuth();
+  const premium = isPremium(profile);
+  useEffect(() => setAdFree(premium), [premium]);
   const [open, setOpen] = useState(false);
   const [left, setLeft] = useState(5);
   useEffect(() => {
@@ -125,7 +137,7 @@ export function InterstitialHost() {
     const t = setTimeout(() => setLeft((s) => s - 1), 1000);
     return () => clearTimeout(t);
   }, [open, left]);
-  if (!open) return null;
+  if (!open || premium) return null;
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 text-white">
       <span className="absolute top-4 left-4 rounded bg-white/20 px-2 py-0.5 text-[10px]">Ad</span>
@@ -144,6 +156,8 @@ export function InterstitialHost() {
 
 /** Small banner / native ad for feed and chat list. */
 export function BannerAd() {
+  const { profile } = useAuth();
+  if (isPremium(profile)) return null;
   return (
     <div className="mx-3 my-2 rounded-2xl border border-gray-100 bg-gray-50 p-3 text-gray-900">
       <div className="mb-1 text-[10px] text-gray-400">Sponsored · Ad</div>
